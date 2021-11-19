@@ -8,7 +8,8 @@ export default function Singup() {
   const [userName, setUserName] = useState('');
 
   function handleSubmit() {
-    singup(userName);
+    console.log('Username: ', userName);
+    singup({ userName: 'batschauer', password: '123'});
   }
 
   return (
