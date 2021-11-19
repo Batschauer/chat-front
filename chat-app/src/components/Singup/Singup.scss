@@ -1,0 +1,22 @@
+.sgup.p-card {
+    background-color: #3C415C;
+    color: #B4A5A5;
+    width: 40vw;
+    .sgup__data {
+        display: flex;
+        flex-direction: column;
+        position: relative;
+        &>input {
+            background-color: transparent;
+            border-style: none;
+            color: #EDEDED;
+            font-size: 2rem;
+            font-weight: 500;
+            outline: none;
+            -webkit-appearance: none;
+        }
+    }
+    & .p-button-sm {
+        margin-top: 1rem;
+    }
+}
