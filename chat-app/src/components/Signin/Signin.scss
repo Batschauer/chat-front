@@ -1,0 +1,40 @@
+.sgin.p-card {
+    background-color: #222831; //#3C415C; #0F044C
+    border-radius: 0.5rem;
+    color: #B4A5A5;
+    height: 14rem;
+    left: calc(50% - 15vw);
+    position: absolute;
+    top: calc(50% - 14rem);
+    width: 30vw;
+    .p-card-header {
+        display: flex;
+        padding-top: 0.5rem;
+        &>span {
+            margin: 0 auto;
+        }
+    }
+    .p-card-content {
+        &>form>div {
+            display: flex;
+            flex-direction: column;
+            & .p-float-label {
+                margin: 0 auto;
+            }
+            & .p-button {
+                margin: 0.75rem auto 0;
+                border-radius: 1.75rem;
+            }
+        }
+    }
+    .p-card-footer {
+        display: flex;
+        &>a {
+            color: #DDDDDD;
+            cursor: pointer;
+            font-size: 0.85rem;
+            margin: auto;
+            text-decoration: none;
+        }
+    }
+}

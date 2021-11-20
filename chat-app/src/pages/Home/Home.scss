@@ -1,0 +1,44 @@
+.home-page.p-card {
+    background-color: #222831;
+    border-radius: 0.5rem;
+    color: #B4A5A5;
+    height: 12rem;
+    left: 25%;
+    position: absolute;
+    top: calc(50% - 12rem);
+    user-select: none;
+    width: 50vw;
+    .p-card-header {
+        display: flex;
+        padding-top: 0.5rem;
+        &>span {
+            margin: 0 auto;
+        }
+    }
+    .p-card-content {
+        display: grid;
+        & span {
+            text-align: center;
+            &.p-desc-2 {
+                font-style: oblique;
+            }
+        }
+        .p-start-btn {
+            background-color: #54A4AF;
+            border-radius: 1.75rem;
+            color: #222831;
+            font-size: 1.1rem;
+            font-weight: 400;
+            justify-self: center;
+            margin-top: 1rem;
+            padding: 0.5rem 1rem;
+            text-align: center;
+            text-decoration: none;
+            width: fit-content;
+            &:hover {
+                background-color: #14FFEC;
+                color: black;
+            }
+        }
+    }
+}

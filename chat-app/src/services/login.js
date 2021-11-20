@@ -9,3 +9,14 @@ export async function singup({ userName, password }) {
 
     localStorage.setItem(`${userName}_info`, { key: _key });
 }
+
+export async function singin({ username }) {
+    try {
+        await httpAgent.get(`/signin?userName=${username}`);
+    } catch (error) {
+        console.log('[Error] - signin: ', error)
+        return false;
+    }
+
+    return true;
+}

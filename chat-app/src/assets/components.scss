@@ -1,0 +1,10 @@
+.p-username-input.p-inputtext {
+    background-color: transparent;
+    border: 0px;
+    border-bottom: 1px solid;
+    border-radius: 0;
+    color: #B4A5A5;
+    &:enabled:focus {
+        box-shadow: none;
+    }
+}

@@ -2,19 +2,19 @@ import React, { useState, useEffect } from 'react';
 import { Card } from 'primereact/card';
 import { Button } from 'primereact/button';
 import { singup } from '../../services/login';
-import './Singup.scss';
+import './Signup.scss';
 
-export default function Singup() {
+export default function Signup({ onClose }) {
   const [userName, setUserName] = useState('');
 
   function handleSubmit() {
     console.log('Username: ', userName);
     singup({ userName: userName, password: '' });
+    onClose?.();
   }
 
   function handleChange(e) {
-    console.log('Change: ', e);
-    //setUserName(e.value);
+    setUserName(e.target.value);
   }
 
   return (
