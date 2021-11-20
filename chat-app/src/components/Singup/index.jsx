@@ -9,14 +9,19 @@ export default function Singup() {
 
   function handleSubmit() {
     console.log('Username: ', userName);
-    singup({ userName: 'batschauer', password: '123'});
+    singup({ userName: userName, password: '' });
+  }
+
+  function handleChange(e) {
+    console.log('Change: ', e);
+    //setUserName(e.value);
   }
 
   return (
     <Card className='sgup' title='Cadastre-se'>
       <div className='sgup__data'>
         <label htmlFor='inputUser'>Nome de usuário</label>
-        <input type='text' maxlength='20' id='inputUser' onChange={ (e) => setUserName(e.value) } />
+        <input type='text' maxlenght='20' id='inputUser' onChange={handleChange} />
       </div>
       <Button
         className='p-button-sm'
