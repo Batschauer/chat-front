@@ -4,6 +4,6 @@ var httpAgent = axios.create({
     baseURL: 'http://localhost:3031/'
 });
 
-export async function getMessages({ userName, from}: any) {
+export async function getMessages({ userName, from }) {
     return await httpAgent.get(`/messages?userName=${userName}&from=${from}`);
 }
