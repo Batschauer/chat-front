@@ -1,9 +1,9 @@
 //@TODO: Implementar a criptografia
 
 export function encrypt(key, data) {
-    return '';
+    return data;
 }
 
 export function decrypt(key, data) {
-    return '';
+    return data;
 }

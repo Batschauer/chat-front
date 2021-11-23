@@ -10,6 +10,8 @@ import { TieredMenu } from 'primereact/tieredmenu';
 import { getUsers } from '../../services/user';
 import allActions from '../../redux/actions';
 
+const GET_SENDER_USER = '/from_(\w+)_to\w+/gm';
+
 export default function Chat() {
     const [users, setUsers] = useState([]);
     const [message, setMessage] = useState('');
@@ -24,8 +26,6 @@ export default function Chat() {
             },
         }) => [key, user]
     );
-
-    const estadoRedux = useSelector((state) => state);
 
     const dispatch = useDispatch();
 
@@ -49,6 +49,23 @@ export default function Chat() {
         };
 
         localStorage.setItem(`message_${user}_${currentUser}`, messages);
+    };
+
+    const getSender = (destination) => {
+        const [sender] = destination.match(GET_SENDER_USER);
+        return sender;
+    };
+
+    const normalizeMessages = (messages) => {
+        let senderMessages = messages.filter((value) => getSender(value.destination) === currentUser);
+        senderMessages = senderMessages.map((value) => {
+            return {
+                from: true,
+                ...value
+            }
+        });
+
+        setAllMessages([...allMessages, ...senderMessages]);
     };
 
     async function load() {
@@ -131,7 +148,7 @@ export default function Chat() {
                                 'message-content-list-item--received': li.from,
                             })}
                         >
-                            {li.message}
+                            {li.data}
                         </li>;
                     })}
                 </ul>
@@ -139,9 +156,10 @@ export default function Chat() {
         );
     };
 
-    useEffect(() => {
+    useEffect(async () => {
       if (currentUser) {
-        // dar o getMessages
+        const _messages = await getMessages(user, currentUser);
+        normalizeMessages(_messages);
       }
     }, [currentUser]);
 
@@ -152,20 +170,6 @@ export default function Chat() {
     return (
         <Card className='chat-card' header={header} footer={footer}>
             {content()}
-            <span>
-                Lorem ipsum donec massa torquent nibh luctus leo fringilla
-                tempus habitant scelerisque tristique, sodales quam et lacinia
-                aenean himenaeos mattis arcu maecenas sed eu, platea nunc orci
-                ante rutrum senectus nunc habitasse fringilla habitasse donec.
-                ac ad cras consectetur platea, molestie suscipit imperdiet nulla
-                auctor, et sodales enim. pretium justo nec at nec himenaeos eget
-                mattis curae vehicula, sagittis feugiat augue gravida ornare
-                tempus cubilia phasellus senectus, inceptos sem habitant quam
-                sagittis mattis neque tincidunt. ut sapien accumsan et dui
-                tempor est faucibus pretium, himenaeos blandit curabitur arcu
-                varius duis pulvinar semper nullam, condimentum facilisis libero
-                habitant vehicula nam eleifend.{' '}
-            </span>
         </Card>
     );
 }
