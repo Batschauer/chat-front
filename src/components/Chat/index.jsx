@@ -2,7 +2,7 @@ import { Card } from 'primereact/card';
 import React, { useEffect, useState, useRef } from 'react';
 import classNames from 'classnames';
 import './Chat.scss';
-import { getMessages } from '../../services/messages';
+import { getMessages, sendMessage } from '../../services/messages.js';
 import { useAuth } from '../../hooks/auth';
 import { useDispatch, useSelector } from 'react-redux';
 import { decrypt } from '../../utils/crypto';
@@ -10,7 +10,7 @@ import { TieredMenu } from 'primereact/tieredmenu';
 import { getUsers } from '../../services/user';
 import allActions from '../../redux/actions';
 
-const GET_SENDER_USER = '/from_(\w+)_to\w+/gm';
+const GET_SENDER_USER = /from_(\w+)_to\w+/;
 
 export default function Chat() {
     const [users, setUsers] = useState([]);
@@ -52,20 +52,30 @@ export default function Chat() {
     };
 
     const getSender = (destination) => {
-        const [sender] = destination.match(GET_SENDER_USER);
+        const [_, sender] = destination.match(GET_SENDER_USER);
         return sender;
     };
 
     const normalizeMessages = (messages) => {
-        let senderMessages = messages.filter((value) => getSender(value.destination) === currentUser);
+        let senderMessages = messages.filter(
+            (value) => getSender(value.destination) === currentUser
+        );
         senderMessages = senderMessages.map((value) => {
             return {
                 from: true,
-                ...value
-            }
+                ...value,
+            };
         });
 
-        setAllMessages([...allMessages, ...senderMessages]);
+        setAllMessages([
+            ...allMessages,
+            ...senderMessages,
+            {
+                id: 6,
+                destination: 'from_batschauer_to_daniel',
+                data: 'Lorem ipsum adipiscing netus ut sed, curabitur convallis at donec etiam curae, cursus sollicitudin curabitur libero. et feugiat volutpat fermentum at nec dictumst blandit ut ante, diam etiam inceptos cras elementum commodo semper torquent, tincidunt rhoncus etiam tristique sed commodo sit malesuada. ',
+            },
+        ]);
     };
 
     async function load() {
@@ -77,7 +87,7 @@ export default function Chat() {
     }
 
     async function run() {
-        const _users = await getUsers(user) || [];
+        const _users = (await getUsers(user)) || [];
 
         const _menuModel = _users.map((value) => {
             return {
@@ -91,11 +101,23 @@ export default function Chat() {
 
     function handleSendMessage() {
         console.log('Mensagem: ', message);
+
+        sendMessage(user, currentUser, message);
+
+        setAllMessages([
+            ...allMessages,
+            {
+                id: 24,
+                destination: `from_${user}_to_${currentUser}`,
+                data: message,
+            },
+        ]);
+
         setMessage('');
     }
 
     function handleUserChange(e) {
-        dispatch(allActions.doSetMessage({ user: e.item.label}));
+        dispatch(allActions.doSetMessage({ user: e.item.label }));
     }
 
     const header = () => {
@@ -142,14 +164,20 @@ export default function Chat() {
             <div className='message-content'>
                 <ul className='message-content-list'>
                     {allMessages.map((li, index) => {
-                        <li
-                            key={index}
-                            className={classNames('message-content-list-item', {
-                                'message-content-list-item--received': li.from,
-                            })}
-                        >
-                            {li.data}
-                        </li>;
+                        return (
+                            <li
+                                key={index}
+                                className={classNames(
+                                    'message-content-list-item',
+                                    {
+                                        'message-content-list-item--received':
+                                            li.from,
+                                    }
+                                )}
+                            >
+                                {li.data}
+                            </li>
+                        );
                     })}
                 </ul>
             </div>
@@ -157,11 +185,15 @@ export default function Chat() {
     };
 
     useEffect(async () => {
-      if (currentUser) {
-        const _messages = await getMessages(user, currentUser);
-        normalizeMessages(_messages);
-      }
+        if (currentUser) {
+            const _messages = await getMessages(user, currentUser);
+            normalizeMessages(_messages);
+        }
     }, [currentUser]);
+
+    useEffect(() => {
+        console.log('Mensagens: ', allMessages);
+    }, [allMessages]);
 
     useEffect(() => {
         run();
@@ -169,7 +201,7 @@ export default function Chat() {
 
     return (
         <Card className='chat-card' header={header} footer={footer}>
-            {content()}
+            {allMessages && content()}
         </Card>
     );
 }

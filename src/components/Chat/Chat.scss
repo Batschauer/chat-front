@@ -29,8 +29,28 @@
         .p-card-content {
             padding: 1rem 1rem;
             .message-content {
+                overflow: auto;
                 .message-content-list {
+                    align-items: flex-end;
+                    display: flex;
+                    flex-direction: column;
                     list-style: none;
+                    margin: 0;
+                    padding: 0;
+                    .message-content-list-item {
+                        background-color: $green2;
+                        border-radius: 0.5rem;
+                        color: $grey4;
+                        height: auto;
+                        margin: 0.5rem;
+                        max-width: 27rem;
+                        padding: 0.2rem 0.5rem;
+                        width: fit-content;
+                        &.message-content-list-item--received {
+                            align-self: flex-start;
+                            background-color: $grey3;
+                        }
+                    }
                 }
             }
         }
