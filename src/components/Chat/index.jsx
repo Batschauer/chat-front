@@ -2,7 +2,7 @@ import { Card } from 'primereact/card';
 import React, { useEffect, useState, useRef } from 'react';
 import classNames from 'classnames';
 import './Chat.scss';
-import { getMessages, sendMessage } from '../../services/messages.js';
+import { getMessages, sendMessage } from '../../services/message.js';
 import { useAuth } from '../../hooks/auth';
 import { useDispatch, useSelector } from 'react-redux';
 import { decrypt } from '../../utils/crypto';
@@ -70,11 +70,6 @@ export default function Chat() {
         setAllMessages([
             ...allMessages,
             ...senderMessages,
-            {
-                id: 6,
-                destination: 'from_batschauer_to_daniel',
-                data: 'Lorem ipsum adipiscing netus ut sed, curabitur convallis at donec etiam curae, cursus sollicitudin curabitur libero. et feugiat volutpat fermentum at nec dictumst blandit ut ante, diam etiam inceptos cras elementum commodo semper torquent, tincidunt rhoncus etiam tristique sed commodo sit malesuada. ',
-            },
         ]);
     };
 
