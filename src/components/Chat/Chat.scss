@@ -1,6 +1,6 @@
 @import '../../assets/colors.scss';
 .chat-card.p-card {
-    background-color: $grey2;
+    background-color: $gray2;
     border-radius: 0.5rem;
     height: 40rem;
     left: calc(50% - 35vw);
@@ -9,7 +9,7 @@
     width: 70vw;
     .p-card-header {
         height: 3.25rem;
-        background-color: $grey1;
+        background-color: $gray1;
         border-radius: 0.5rem;
         .user-data {
             padding: 1rem;
@@ -40,7 +40,7 @@
                     .message-content-list-item {
                         background-color: $green2;
                         border-radius: 0.5rem;
-                        color: $grey4;
+                        color: $gray4;
                         height: auto;
                         margin: 0.5rem;
                         max-width: 27rem;
@@ -48,7 +48,7 @@
                         width: fit-content;
                         &.message-content-list-item--received {
                             align-self: flex-start;
-                            background-color: $grey3;
+                            background-color: $gray3;
                         }
                     }
                 }
@@ -56,7 +56,7 @@
         }
         .p-card-footer {
             align-self: flex-end;
-            background-color: $grey1;
+            background-color: $gray1;
             border-radius: 0.5rem;
             height: fit-content;
             padding: 0;
@@ -65,7 +65,7 @@
                 align-items: center;
                 padding: 1rem 2rem;
                 .message-data-input {
-                    background-color: $grey2;
+                    background-color: $gray2;
                     border: none;
                     border-radius: 0.5rem;
                     color: $beige1;

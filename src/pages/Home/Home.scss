@@ -1,7 +1,8 @@
+@import '../../assets/colors.scss';
 .home-page.p-card {
-    background-color: #222831;
+    background-color: $gray0;
     border-radius: 0.5rem;
-    color: #B4A5A5;
+    color: $beige1;
     height: 12rem;
     left: 25%;
     position: absolute;
@@ -26,7 +27,7 @@
         .p-start-btn {
             background-color: #54A4AF;
             border-radius: 1.75rem;
-            color: #222831;
+            color: $gray0;
             font-size: 1.1rem;
             font-weight: 400;
             justify-self: center;

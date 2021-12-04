@@ -1,23 +1,18 @@
+import React from 'react';
 import { Card } from 'primereact/card';
-import React, { useState } from 'react';
 import { InputText } from 'primereact/inputtext';
 import { useFormik } from 'formik';
-import Signup from '../Signup';
 import './Signin.scss';
 import { Button } from 'primereact/button';
 import { singin } from '../../services/login';
 import { Link } from 'react-router-dom';
 
 export default function Signin({ callback }) {
-  const [isSingUpVisible, setIsSingUpVisible] = useState(false);
-
   async function handleSubmit(values) {
     const { username } = values;
-    console.log('values: ', values);
     
     const isLogedIn = await singin({ ...values });
     if (isLogedIn) {
-      console.log('Conseguiu logar!');
       callback?.(username);
     }
   }

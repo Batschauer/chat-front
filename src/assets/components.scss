@@ -1,9 +1,10 @@
+@import './colors.scss';
 .p-username-input.p-inputtext {
     background-color: transparent;
     border: 0px;
     border-bottom: 1px solid;
     border-radius: 0;
-    color: #B4A5A5;
+    color: $beige1;
     &:enabled:focus {
         box-shadow: none;
     }

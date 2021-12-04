@@ -9,10 +9,12 @@ export async function getMessages(userName, from) {
     return data;
 }
 
-export async function sendMessage(from, to, data) {
-    await httpAgent.post(
+export async function sendMessage(from, to, message) {
+    const { data } = await httpAgent.post(
         `/messages/send?from=${from}&to=${to}`, {
-            message: data,
+            message,
         }
     );
+
+    return data;
 }

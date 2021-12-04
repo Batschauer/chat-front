@@ -1,22 +1,40 @@
+@import '../../assets/colors.scss';
 .sgup.p-card {
-    background-color: #3C415C;
-    color: #B4A5A5;
-    width: 40vw;
-    .sgup__data {
+    background-color: $gray0;
+    border-radius: 0.5rem;
+    color: $beige1;
+    height: 14rem;
+    left: calc(50% - 15vw);
+    position: absolute;
+    top: calc(50% - 14rem);
+    width: 30vw;
+    .p-card-header {
         display: flex;
-        flex-direction: column;
-        position: relative;
-        &>input {
-            background-color: transparent;
-            border-style: none;
-            color: #EDEDED;
-            font-size: 2rem;
-            font-weight: 500;
-            outline: none;
-            -webkit-appearance: none;
+        padding-top: 0.5rem;
+        &>span {
+            margin: 0 auto;
         }
     }
-    & .p-button-sm {
-        margin-top: 1rem;
+    & .p-card-body {
+        height: calc(100% - 2.5rem);
+        & .p-card-content {
+            height: 100%;
+            padding: 0;
+            &>form {
+                height: 100%;
+                &>div {
+                    display: flex;
+                    flex-direction: column;
+                    height: 100%;
+                    & .p-float-label {
+                        margin: 1.75rem auto 0;
+                    }
+                    & .p-button {
+                        margin: 1.75rem auto 0;
+                        border-radius: 1.75rem;
+                    }
+                }
+            }
+        }
     }
 }

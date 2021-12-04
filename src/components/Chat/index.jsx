@@ -16,15 +16,14 @@ export default function Chat() {
     const [users, setUsers] = useState([]);
     const [message, setMessage] = useState('');
     const [allMessages, setAllMessages] = useState([]);
+    const [history, setHistory] = useState([]);
 
-    //@TODO: Gerar e recuperar chave privada
-    const [privateKey, currentUser] = useSelector(
+    const [currentUser] = useSelector(
         ({
             rootReducer: {
-                login: { key },
                 message: { user },
             },
-        }) => [key, user]
+        }) => [user]
     );
 
     const dispatch = useDispatch();
@@ -34,21 +33,30 @@ export default function Chat() {
     const { user } = useAuth();
 
     const getMessagesLocalStorage = () => {
-        const messages = localStorage.getItem(`message_${user}_${currentUser}`);
+        const _messages = localStorage.getItem(
+            `message_${user}_${currentUser}`
+        );
+        const messages = JSON.parse(_messages);
 
         if (messages) {
             const { history } = messages;
 
-            setAllMessages([...history, ...allMessages]);
+            return [...history];
         }
+
+        return [];
     };
 
     const setMessagesLocalStorage = () => {
         const messages = {
-            history: allMessages,
+            history: [...history.sort(({ idA }, { idB }) => idA - idB)],
         };
 
-        localStorage.setItem(`message_${user}_${currentUser}`, messages);
+        if (currentUser)
+            localStorage.setItem(
+                `message_${user}_${currentUser}`,
+                JSON.stringify(messages)
+            );
     };
 
     const getSender = (destination) => {
@@ -57,29 +65,15 @@ export default function Chat() {
     };
 
     const normalizeMessages = (messages) => {
-        let senderMessages = messages.filter(
-            (value) => getSender(value.destination) === currentUser
-        );
-        senderMessages = senderMessages.map((value) => {
+        messages = messages.map((value) => {
             return {
-                from: true,
                 ...value,
+                from: getSender(value.destination) === currentUser,
             };
         });
 
-        setAllMessages([
-            ...allMessages,
-            ...senderMessages,
-        ]);
+        return [...messages];
     };
-
-    async function load() {
-        const _dataEncrypted = await getMessages({ user, from: currentUser });
-
-        const _data = decrypt(privateKey, _dataEncrypted);
-
-        setAllMessages([...allMessages, ..._data]);
-    }
 
     async function run() {
         const _users = (await getUsers(user)) || [];
@@ -94,24 +88,39 @@ export default function Chat() {
         setUsers(_menuModel);
     }
 
-    function handleSendMessage() {
-        console.log('Mensagem: ', message);
+    async function load() {
+        const _messages = await getMessages(user, currentUser);
+        const _history = getMessagesLocalStorage();
 
-        sendMessage(user, currentUser, message);
+        let _allMessages = [..._history, ..._messages];
+        _allMessages.sort((valueA, valueB) => valueA.id - valueB.id);
 
-        setAllMessages([
+        setHistory(normalizeMessages(_allMessages));
+    }
+
+    async function handleSendMessage() {
+        const { id } = await sendMessage(user, currentUser, message);
+
+        const _history = [
             ...allMessages,
             {
-                id: 24,
+                id,
                 destination: `from_${user}_to_${currentUser}`,
                 data: message,
             },
-        ]);
+        ];
+
+        console.log('Historico: ', _history);
+        setHistory(_history);
 
         setMessage('');
     }
 
     function handleUserChange(e) {
+        if (currentUser) {
+            setMessagesLocalStorage();
+        }
+
         dispatch(allActions.doSetMessage({ user: e.item.label }));
     }
 
@@ -155,7 +164,7 @@ export default function Chat() {
     };
 
     const content = () => {
-        return (
+        return allMessages ? (
             <div className='message-content'>
                 <ul className='message-content-list'>
                     {allMessages.map((li, index) => {
@@ -176,19 +185,29 @@ export default function Chat() {
                     })}
                 </ul>
             </div>
-        );
+        ) : null;
     };
 
-    useEffect(async () => {
+    useEffect(() => {
         if (currentUser) {
-            const _messages = await getMessages(user, currentUser);
-            normalizeMessages(_messages);
+            load();
         }
     }, [currentUser]);
 
     useEffect(() => {
-        console.log('Mensagens: ', allMessages);
+        if (Array.isArray(allMessages) && allMessages.length) {
+            setMessagesLocalStorage();
+            console.log('Effect: ', allMessages);
+        }
     }, [allMessages]);
+
+    useEffect(() => {
+        if (history) {
+            setMessagesLocalStorage();
+
+            setAllMessages(history);
+        }
+    }, [history]);
 
     useEffect(() => {
         run();
@@ -196,7 +215,7 @@ export default function Chat() {
 
     return (
         <Card className='chat-card' header={header} footer={footer}>
-            {allMessages && content()}
+            {content()}
         </Card>
     );
 }

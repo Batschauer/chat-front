@@ -1,7 +1,8 @@
+@import '../../assets/colors.scss';
 .sgin.p-card {
-    background-color: #222831; //#3C415C; #0F044C
+    background-color: $gray0;
     border-radius: 0.5rem;
-    color: #B4A5A5;
+    color: $beige1;
     height: 14rem;
     left: calc(50% - 15vw);
     position: absolute;
